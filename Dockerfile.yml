@@ -31,8 +31,8 @@
 
     - name: Check if Docker build succeeded
       fail:
-        msg: "Docker build failed with exit code {{ docker_build.rc }}"
-      when: docker_build.rc != 0
+        msg: "Docker build failed"
+      when: docker_build.failed
 
     - name: Create container
       command: docker run -itd -P myadd:ansible2
