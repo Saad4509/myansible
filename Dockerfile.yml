@@ -33,5 +33,5 @@
       when: docker_build.failed
 
     - name: Create container
-      command: docker run -itd -P myadd:ansible2
+      command: docker run -itd -P myadd:ansible2 .
       ignore_errors: true
