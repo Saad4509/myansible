@@ -23,9 +23,7 @@
         dest: /tmp/mygitrepo2
 
     - name: Build Docker image locally
-      command: docker build -t myadd:ansible2 "{{ ansible_env.HOME }}/mygitrepo2"
-      args:
-        chdir: "{{ ansible_env.HOME }}/mygitrepo2/"
+      command: docker build -t myadd:ansible2 /tmp/mygitrepo2
       register: docker_build
       ignore_errors: true
 
