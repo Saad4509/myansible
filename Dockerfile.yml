@@ -1,37 +1,22 @@
----
-- hosts: webservers
+- name: Deploy on docker containers
+  hosts: webserver
   become: true
   become_user: root
   tasks:
-    - name: Install necessary packages
-      yum:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - tomcat
-        - docker
-        - git
-
-    - name: Start Docker service
-      service:
-        name: docker
-        state: started
-
-    - name: Clone the repository
-      git:
-        repo: https://github.com/Saad4509/myansible.git
-        dest: /tmp/mygitrepo2
-
-    - name: Build Docker image locally
-      command: chdir=/tmp/mygitrepo2 docker build -t myadd
-      register: docker_build
-      ignore_errors: true
-
-    - name: Check if Docker build succeeded
-      fail:
-        msg: "Docker build failed"
-      when: docker_build.failed
-
-    - name: Create container
-      command: docker run -d -P myadd .
-      ignore_errors: true
+  - name: Install git and docker
+    package: name={{item}} state=present
+    loop:
+    - git
+    - docker
+    - tree
+    - wget
+  - name: Start docker service
+    service: name=docker state=started
+  - name: clone the github repo
+    git:
+     repo=https://github.com/Saad4509/myansible.git
+     dest=/temp/myrepo
+  - name: switch to the directory and build docker image
+    command: chdir=/temp/myrepo docker build -t mydockerimage
+  - name: Run the image to deploy app on container
+    command: docker run -d -P mydockerimage
