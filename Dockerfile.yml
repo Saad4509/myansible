@@ -23,7 +23,7 @@
         dest: /tmp/mygitrepo2
 
     - name: Build Docker image locally
-      command: chdir=/tmp/mygitrepo2 docker build -t myadd:ansible2
+      command: chdir=/tmp/mygitrepo2 docker build -t myadd
       register: docker_build
       ignore_errors: true
 
@@ -33,5 +33,5 @@
       when: docker_build.failed
 
     - name: Create container
-      command: docker run -itd -P myadd:ansible2 .
+      command: docker run -d -P myadd .
       ignore_errors: true
